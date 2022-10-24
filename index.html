@@ -56,6 +56,7 @@
     <tr>
         <td>
             h264-yuv420p.mp4
+            <button class="export-btn">💾</button>
             <small>ffmpeg -i rainbow.png -c:v libx264 -pix_fmt yuv420p h264-yuv420p.mp4</small>
         </td>
         <td><video src="h264-yuv420p.mp4" id="vid" crossorigin="anonymous"></video></td>
@@ -64,13 +65,28 @@
         <td>h264-yuv420p.png<small>ffmpeg -i h264-yuv420p.mp4 h264-yuv420p.png</small></td>
         <td><img src="h264-yuv420p.png" /></td>
     </tr>
+
+
     <tr>
         <td>rainbow.png</td>
-        <td><img src="rainbow.png" /></td> 
+        <td><img src="rainbow.png" /></td>
     </tr>
     <tr>
-        <td><button id="vid-btn">Export h264-yuv420p.mp4 to canvas in js</button><br /><button id="vid-btn-dl">Save canvas as png</button></td>
-        <td><canvas id="cv"></canvas></td>
+        <td>
+            h264-bt709-yuv420p.mp4
+            <button class="export-btn">💾</button>
+            <small>ffmpeg -i rainbow.png -c:v libx264 -pix_fmt yuv420p -colorspace:v "bt709" -color_primaries:v "bt709" -color_trc:v "bt709" -color_range:v "tv" h264-bt709-yuv420p.mp4</small>
+        </td>
+        <td><video src="h264-bt709-yuv420p.mp4" crossorigin="anonymous"></video></td>
+    </tr>
+
+    <tr>
+        <td>rainbow.png</td>
+        <td><img src="rainbow.png" /></td>
+    </tr>
+    <tr id="cv">
+        <td>Canvas / export from: <small>...</small></td>
+        <td><canvas></canvas></td>
     </tr>
 </table>
 
@@ -78,27 +94,26 @@
 
 
 <script>
-    document.getElementById('vid-btn').onclick = async(e) => {
-        const elvideo = document.getElementById('vid')
+    Array.from(document.getElementsByClassName('export-btn')).forEach(elt => elt.onclick = async (e) => {
+        const elvideo = e.currentTarget.closest('tr').querySelector('video')
 
         const bitmap = await createImageBitmap(elvideo)
 
-        const canvas = document.getElementById('cv')
+        const canvas = document.getElementById('cv').querySelector('canvas')
         canvas.width = bitmap.width;
         canvas.height = bitmap.height;
         const ctx = canvas.getContext("2d");
         ctx.drawImage(bitmap, 0, 0);
-    }
 
-    document.getElementById('vid-btn-dl').onclick = async(e) => {
-        const canvas = document.getElementById('cv')
+        const fn = elvideo.src.split('/').pop()
+        document.getElementById('cv').querySelector('small').textContent = fn
+
         const dt = canvas.toDataURL('image/png');
         const link = document.createElement('a')
         link.setAttribute('href', dt)
-        link.setAttribute('download', 'export_'+navigator.userAgent.replaceAll('/','-').replaceAll(' ', '_')+".png")
+        link.setAttribute('download', 'export_' + fn + '_' + navigator.userAgent.replaceAll('/', '-').replaceAll(' ', '_') + ".png")
         document.body.appendChild(link) // Required for FF
         link.click()
-    }
-
+    })
 </script>
 
