@@ -95,7 +95,7 @@
         const dt = canvas.toDataURL('image/png');
         const link = document.createElement('a')
         link.setAttribute('href', dt)
-        link.setAttribute('download', 'export.png')
+        link.setAttribute('download', 'export_'+navigator.userAgent.replaceAll('/','-').replaceAll(' ', '_')+".png")
         document.body.appendChild(link) // Required for FF
         link.click()
     }
