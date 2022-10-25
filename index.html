@@ -73,11 +73,25 @@
     </tr>
     <tr>
         <td>
-            h264-bt709-yuv420p.mp4
+            h264-bt709-yuv420p.mp4 (tag)
             <button class="export-btn">💾</button>
             <small>ffmpeg -i rainbow.png -c:v libx264 -pix_fmt yuv420p -colorspace:v "bt709" -color_primaries:v "bt709" -color_trc:v "bt709" -color_range:v "tv" h264-bt709-yuv420p.mp4</small>
         </td>
         <td><video src="h264-bt709-yuv420p.mp4" crossorigin="anonymous"></video></td>
+    </tr>
+
+
+    <tr>
+        <td>rainbow.png</td>
+        <td><img src="rainbow.png" /></td>
+    </tr>
+    <tr>
+        <td>
+            h264-f-bt709-yuv420p.mp4 (conversion filter)
+            <button class="export-btn">💾</button>
+            <small>ffmpeg -i rainbow.png -c:v libx264 -pix_fmt yuv420p -filter:v scale=in_color_matrix=auto:in_range=auto:out_color_matrix=bt709:out_range=tv h264-f-bt709-yuv420p.mp4</small>
+        </td>
+        <td><video src="h264-f-bt709-yuv420p.mp4" crossorigin="anonymous"></video></td>
     </tr>
 
     <tr>
